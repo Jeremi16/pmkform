@@ -16,7 +16,7 @@ const AdminDashboard = () => {
         try {
             const token = localStorage.getItem('adminToken');
             // Fetch ALL data without filters
-            const response = await axios.get('http://localhost:3000/api/registrations', {
+            const response = await axios.get('/api/registrations', {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setAllRegistrations(response.data);
@@ -79,7 +79,7 @@ const AdminDashboard = () => {
     const handleExport = async (type) => {
         try {
             const token = localStorage.getItem('adminToken');
-            const url = type === 'xlsx' ? 'http://localhost:3000/api/export/xlsx' : 'http://localhost:3000/api/export';
+            const url = type === 'xlsx' ? '/api/export/xlsx' : '/api/export';
             const filename = type === 'xlsx' ? 'OPREC BPH PMK ITERA 2026.xlsx' : 'registrations.csv';
 
             const response = await axios.get(url, {

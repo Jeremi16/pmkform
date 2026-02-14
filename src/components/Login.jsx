@@ -14,10 +14,11 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3000/api/admin/login', credentials);
+            const { username, password } = credentials;
+            const response = await axios.post('/api/admin/login', { username, password });
             localStorage.setItem('adminToken', response.data.token);
             navigate('/atminnihbos');
-        } catch (err) {
+        } catch (error) {
             setError('Username atau password salah');
         }
     };

@@ -46,7 +46,7 @@ const RegistrationForm = () => {
         setIsSubmitting(true);
         setSubmitStatus(null);
         try {
-            const response = await axios.post('http://localhost:3000/api/register', {
+            const response = await axios.post('/api/register', {
                 ...data,
                 willing_transfer: data.willing_transfer === 'true'
             });
