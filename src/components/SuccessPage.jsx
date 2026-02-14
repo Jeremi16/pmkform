@@ -23,8 +23,6 @@ const SuccessPage = () => {
                     <div className="flex flex-col gap-3 justify-center items-center">
                         <a
                             href={import.meta.env.VITE_WA_LINK || '#'}
-                            target="_blank"
-                            rel="noopener noreferrer"
                             className="bg-green-600 text-white px-8 py-3 rounded shadow hover:bg-green-700 transition-all font-medium w-full max-w-xs flex items-center justify-center gap-2"
                         >
                             Gabung Grup WhatsApp
@@ -39,7 +37,7 @@ const SuccessPage = () => {
                 </div>
 
                 <div className="text-center text-xs text-gray-500 pb-8">
-                    IT Division PMK ITERA 2026
+                    Created by IT Division PMK ITERA 2026
                 </div>
             </div>
         </div>
