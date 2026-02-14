@@ -1,0 +1,140 @@
+[
+    {
+        "id": "dep_internal",
+        "name": "Departemen Internal",
+        "divisions": [
+            {
+                "id": "div_eo",
+                "name": "Divisi Event Organizer",
+                "description": "Bertanggung jawab mengatur pembentukan, mengoordinir, dan mengawasi kinerja panitia pelaksana acara besar PMK. Menyusun garis besar timeline serta melakukan evaluasi sebelum dan sesudah acara."
+            },
+            {
+                "id": "div_harmonisasi",
+                "name": "Divisi Harmonisasi",
+                "description": "Berperan sebagai wadah aspirasi bagi massa PMK (himpunan dan TPB) serta menjadi gerbang utama bagi Mahasiswa Baru. Mengelola PMK Internship, mendata seluruh massa, melakukan sosialisasi persidangan (Mubes & Pemira), serta mengadakan kegiatan upgrading pengurus."
+            }
+        ]
+    },
+    {
+        "id": "dep_eksternal",
+        "name": "Departemen Eksternal",
+        "divisions": [
+            {
+                "id": "div_ekstra_kampus",
+                "name": "Divisi Ekstra Kampus",
+                "description": "Fokus pada pengelolaan informasi dan menjalin hubungan baik dengan pihak di luar ITERA, termasuk melakukan negosiasi dengan UKM Kristen lain."
+            },
+            {
+                "id": "div_intra_kampus",
+                "name": "Divisi Intra Kampus",
+                "description": "Mengelola informasi di lingkup internal kampus, melakukan negosiasi dengan HIMA (Himpunan Mahasiswa) atau birokrat kampus jika diperlukan, serta bertanggung jawab atas perizinan tempat kegiatan."
+            },
+            {
+                "id": "div_mission",
+                "name": "Divisi Mission",
+                "description": "Berfokus pada pelayanan sosial di luar kampus, seperti kunjungan ke panti asuhan, sekolah SLB, serta edukasi masyarakat untuk menumbuhkan rasa cinta melayani."
+            }
+        ]
+    },
+    {
+        "id": "dep_diakonia",
+        "name": "Departemen Diakonia",
+        "divisions": [
+            {
+                "id": "div_doa",
+                "name": "Divisi Doa",
+                "description": "Menjadi wadah dukungan doa melalui 'Menara Doa Kampus', mengunjungi teman yang sakit atau berduka, serta menjalankan ibadah saat teduh bersama pengurus."
+            },
+            {
+                "id": "div_pemuridan",
+                "name": "Divisi Pemuridan",
+                "description": "Melaksanakan kelompok kecil (komsel), diskusi Alkitab, mentoring rohani, menyalurkan berkat ke panti, dan memproduksi konten rohani edukatif (video/podcast)."
+            }
+        ]
+    },
+    {
+        "id": "dep_pelayanan_khusus",
+        "name": "Departemen Pelayanan Khusus",
+        "divisions": [
+            {
+                "id": "div_worship",
+                "name": "Divisi Worship",
+                "description": "Membentuk dan bertanggung jawab atas tim penyanyi (singers), MC, serta penari tamborin dalam setiap acara PMK."
+            },
+            {
+                "id": "div_musik",
+                "name": "Divisi Musik",
+                "description": "Membentuk dan bertanggung jawab atas tim pemusik (keyboard, gitar, drum, dll) untuk keperluan acara."
+            },
+            {
+                "id": "div_wocre",
+                "name": "Divisi Wocre (Worship Creative)",
+                "description": "Menyusun tata ibadah, memproduksi podcast kerohanian, mengelola artikel di website, serta berpartisipasi dalam gerakan kemanusiaan."
+            }
+        ]
+    },
+    {
+        "id": "dep_talenta",
+        "name": "Departemen Talenta",
+        "divisions": [
+            {
+                "id": "div_extra_youth",
+                "name": "Divisi Extra Youth",
+                "description": "Fokus pada minat bakat olahraga (futsal, badminton, E-Sports), membentuk panitia PITC 2025, dan mengadakan latihan rutin mingguan."
+            },
+            {
+                "id": "div_art_interest",
+                "name": "Divisi Art Interest",
+                "description": "Fokus pada bidang kesenian seperti paduan suara (PMK ITERA Choir), pembuatan Mars PMK, serta menyelenggarakan Kelas Talenta (KATA) dan kompetisi seni."
+            }
+        ]
+    },
+    {
+        "id": "dep_operasional",
+        "name": "Departemen Operasional",
+        "divisions": [
+            {
+                "id": "div_akomodasi",
+                "name": "Divisi Akomodasi",
+                "description": "Menangani kebutuhan akomodasi ibadah, bertanggung jawab atas operasional BUS HKBP, dan membantu kebutuhan logistik departemen lain."
+            },
+            {
+                "id": "div_logistik",
+                "name": "Divisi Logistik",
+                "description": "Memfasilitasi alat musik dan tempat untuk ibadah atau latihan, serta melakukan pendataan dan perawatan inventaris PMK dan RIMA."
+            }
+        ]
+    },
+    {
+        "id": "dep_cmit",
+        "name": "Departemen CMIT",
+        "divisions": [
+            {
+                "id": "div_pubdok",
+                "name": "Publikasi & Dokumentasi",
+                "description": "Bertanggung jawab atas dokumentasi kegiatan dan publikasi konten di media sosial."
+            },
+            {
+                "id": "div_desain",
+                "name": "Desain",
+                "description": "Membuat aset visual untuk kebutuhan branding dan publikasi."
+            },
+            {
+                "id": "div_it",
+                "name": "IT",
+                "description": "Mengelola website dan kebutuhan teknologi informasi PMK ITERA."
+            }
+        ]
+    },
+    {
+        "id": "biro_kewirausahaan",
+        "name": "Biro Kewirausahaan",
+        "divisions": [
+            {
+                "id": "div_kewirausahaan",
+                "name": "Tim Kewirausahaan",
+                "description": "Bertugas mencari dana operasional PMK melalui penjualan merchandise di setiap acara, mencari vendor pembuatan barang, serta mempromosikan produk yang dijual."
+            }
+        ]
+    }
+]
