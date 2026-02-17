@@ -300,7 +300,7 @@ const RegistrationForm = () => {
                                 name="portfolio"
                                 register={register}
                                 error={errors.portfolio}
-                                description="Wajib untuk departemen kreatif/multimedia (jika ada)"
+                                description=""
                                 rules={{
                                     validate: {
                                         fileSize: (files) => {
