@@ -28,11 +28,6 @@
                 "id": "div_intra_kampus",
                 "name": "Divisi Intra Kampus",
                 "description": "Mengelola informasi di lingkup internal kampus, melakukan negosiasi dengan HIMA (Himpunan Mahasiswa) atau birokrat kampus jika diperlukan, serta bertanggung jawab atas perizinan tempat kegiatan."
-            },
-            {
-                "id": "div_mission",
-                "name": "Divisi Mission",
-                "description": "Berfokus pada pelayanan sosial di luar kampus, seperti kunjungan ke panti asuhan, sekolah SLB, serta edukasi masyarakat untuk menumbuhkan rasa cinta melayani."
             }
         ]
     },
@@ -123,6 +118,22 @@
                 "id": "div_it",
                 "name": "IT",
                 "description": "Mengelola website dan kebutuhan teknologi informasi PMK ITERA."
+            }
+        ]
+    },
+    {
+        "id": "dept_pembinaan_rohani",
+        "name": "Departemen Pembinaan Rohani",
+        "divisions": [
+            {
+                "id": "div_gospel_group",
+                "name": "Divisi Gospel Group",
+                "description": ""
+            },
+            {
+                "id": "div_doa_pemerhati",
+                "name": "Divisi Doa dan Pemerhati",
+                "description": ""
             }
         ]
     },

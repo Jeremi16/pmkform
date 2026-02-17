@@ -3,6 +3,26 @@ import { CheckCircle } from 'lucide-react';
 import { TitleCard } from './FormUI';
 
 const SuccessPage = () => {
+    const [waLink, setWaLink] = React.useState(import.meta.env.VITE_WA_LINK || '#');
+
+    React.useEffect(() => {
+        const fetchWaLink = async () => {
+            try {
+                // Determine API URL (use relative path if proxy is set, or full URL)
+                const response = await fetch('/api/settings/wa_link');
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data && data.value) {
+                        setWaLink(data.value);
+                    }
+                }
+            } catch (error) {
+                console.error("Failed to fetch WA Link:", error);
+            }
+        };
+        fetchWaLink();
+    }, []);
+
     return (
         <div className="min-h-screen bg-brown-50 py-8 px-4 flex items-center justify-center">
             <div className="max-w-xl w-full space-y-4">
@@ -22,7 +42,9 @@ const SuccessPage = () => {
 
                     <div className="flex flex-col gap-3 justify-center items-center">
                         <a
-                            href={import.meta.env.VITE_WA_LINK || '#'}
+                            href={waLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="bg-green-600 text-white px-8 py-3 rounded shadow hover:bg-green-700 transition-all font-medium w-full max-w-xs flex items-center justify-center gap-2"
                         >
                             Gabung Grup WhatsApp

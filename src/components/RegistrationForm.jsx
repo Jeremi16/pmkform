@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Loader2, CheckCircle, AlertCircle } from 'lucide-react';
+import { Loader2, CheckCircle, AlertCircle, Upload } from 'lucide-react';
 import axios from 'axios';
 import departmentsData from '../data/departments.json';
 import FormSection, { TitleCard } from './FormUI';
@@ -20,20 +20,13 @@ const RegistrationForm = () => {
     const selectedDept2 = useWatch({ control, name: 'dept2' });
     const selectedDiv2 = useWatch({ control, name: 'div2' });
 
-    // Helper to get available divisions based on selected department
     const getDivisions = (deptId) => {
         const dept = departmentsData.find(d => d.id === deptId);
         return dept ? dept.divisions : [];
     };
 
-    // Helper to get division description
-    const getDivisionDesc = (deptId, divId) => {
-        const divisions = getDivisions(deptId);
-        const div = divisions.find(d => d.id === divId);
-        return div ? div.description : null;
-    };
 
-    // Reset dependent fields when parent changes
+
     useEffect(() => {
         setValue('div1', '');
     }, [selectedDept1, setValue]);
@@ -46,25 +39,38 @@ const RegistrationForm = () => {
         setIsSubmitting(true);
         setSubmitStatus(null);
         try {
-            const response = await axios.post('/api/register', {
-                ...data,
-                willing_transfer: data.willing_transfer === 'true'
+            const formData = new FormData();
+
+            // Append all text fields
+            Object.keys(data).forEach(key => {
+                if (key !== 'sertif' && key !== 'portfolio') {
+                    formData.append(key, data[key]);
+                }
             });
 
-            setSubmitStatus('success');
-            setStatusMessage('Pendaftaran berhasil! Terima kasih telah mendaftar.');
-            reset();
+            // Append boolean conversions explicitly if needed, but strings work for FormData
+            // Append Files
+            if (data.sertif && data.sertif[0]) {
+                formData.append('sertif', data.sertif[0]);
+            }
+            if (data.portfolio && data.portfolio[0]) {
+                formData.append('portfolio', data.portfolio[0]);
+            }
 
-            setTimeout(() => {
-                navigate('/success');
-            }, 2000);
+            const response = await axios.post('/api/register', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
+            reset();
+            navigate('/success');
 
         } catch (error) {
             console.error(error);
             setSubmitStatus('error');
-            // Handle duplicate email specific error
             if (error.response && error.response.status === 409) {
-                setStatusMessage('Email ini sudah terdaftar.');
+                setStatusMessage('Email atau NIM sudah terdaftar.');
             } else {
                 setStatusMessage(error.response?.data?.error || 'Terjadi kesalahan. Silakan coba lagi.');
             }
@@ -76,8 +82,6 @@ const RegistrationForm = () => {
     return (
         <div className="min-h-screen bg-brown-50 py-8 px-4">
             <div className="max-w-3xl mx-auto space-y-4">
-
-                {/* Header Image with Logo */}
                 <div className="h-40 bg-brown-800 rounded-t-lg shadow-sm -mb-6 relative z-0 flex items-center justify-center overflow-hidden">
                     <img
                         src="/favicon.png"
@@ -87,11 +91,9 @@ const RegistrationForm = () => {
                 </div>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 relative z-10">
-
-                    {/* Title Card */}
                     <TitleCard
                         title="Open Recruitment BPH PMK ITERA 2026"
-                        description="Mohon isi formulir dengan teliti. Pastikan NIM dan Email Anda valid."
+                        description="Mohon isi formulir dengan teliti. Pastikan data yang Anda masukkan benar."
                         titleClassName="font-serif"
                     />
 
@@ -100,7 +102,7 @@ const RegistrationForm = () => {
                         <InputField
                             name="email"
                             type="email"
-                            placeholder="Email Anda"
+                            placeholder="nama.nim@student.itera.ac.id"
                             register={register}
                             required
                             rules={{
@@ -120,31 +122,29 @@ const RegistrationForm = () => {
                         />
                     </FormSection>
 
-                    {/* Full Name */}
-                    <FormSection title="Nama Lengkap" error={errors.name}>
-                        <InputField name="name" placeholder="Jawaban Anda" register={register} required error={errors.name} />
-                    </FormSection>
+                    {/* Personal Info */}
+                    <FormSection title="Data Diri" error={errors.name || errors.nim || errors.prodi || errors.whatsapp}>
+                        <div className="grid grid-cols-1 gap-4">
+                            <InputField name="name" label="Nama Lengkap" placeholder="Nama Lengkap" register={register} required error={errors.name} />
 
-                    {/* NIM */}
-                    <FormSection title="NIM" description="" error={errors.nim}>
-                        <InputField
-                            name="nim"
-                            placeholder="Jawaban Anda"
-                            register={register}
-                            required
-                            rules={{
-                                pattern: {
-                                    value: /^(123|124|125)\d{6}$/,
-                                    message: "NIM harus diawali 123, 124, atau 125 dan terdiri dari 9 digit"
-                                }
-                            }}
-                            error={errors.nim}
-                        />
-                    </FormSection>
+                            <InputField
+                                name="nim"
+                                label="NIM"
+                                placeholder="NIM"
+                                register={register}
+                                required
+                                rules={{
+                                    pattern: {
+                                        value: /^(123|124|125)\d{6}$/,
+                                        message: "NIM harus diawali 123, 124, atau 125 dan terdiri dari 9 digit"
+                                    }
+                                }}
+                                error={errors.nim}
+                            />
 
-                    {/* WhatsApp */}
-                    <FormSection title="Nomor WhatsApp" error={errors.whatsapp}>
-                        <InputField name="whatsapp" placeholder="Jawaban Anda" register={register} required error={errors.whatsapp} />
+                            <InputField name="prodi" label="Program Studi" placeholder="Program Studi" register={register} required error={errors.prodi} />
+                            <InputField name="whatsapp" label="Nomor WhatsApp" placeholder="08..." register={register} required error={errors.whatsapp} />
+                        </div>
                     </FormSection>
 
                     {/* First Choice */}
@@ -167,22 +167,19 @@ const RegistrationForm = () => {
                                 options={getDivisions(selectedDept1).map(d => ({ value: d.id, label: d.name }))}
                                 disabled={!selectedDept1}
                             />
-                            {selectedDiv1 && (
-                                <div className="text-sm text-gray-600 bg-gray-50 p-3 rounded">
-                                    {getDivisionDesc(selectedDept1, selectedDiv1)}
-                                </div>
-                            )}
-                            <TextAreaField label="Alasan" name="reason1" placeholder="Jawaban Anda" register={register} required error={errors.reason1} />
+
+                            <TextAreaField label="Alasan Pilihan 1" name="reason1" placeholder="Alasan memilih divisi ini..." register={register} required error={errors.reason1} />
                         </div>
                     </FormSection>
 
                     {/* Second Choice */}
-                    <FormSection title="Pilihan Kedua (Opsional)" error={errors.dept2 || errors.div2 || errors.reason2}>
+                    <FormSection title="Pilihan Kedua" error={errors.dept2 || errors.div2 || errors.reason2}>
                         <div className="grid grid-cols-1 gap-4">
                             <SelectField
                                 label="Departemen"
                                 name="dept2"
                                 register={register}
+                                required
                                 error={errors.dept2}
                                 options={departmentsData.map(d => ({ value: d.id, label: d.name }))}
                             />
@@ -190,31 +187,129 @@ const RegistrationForm = () => {
                                 label="Divisi"
                                 name="div2"
                                 register={register}
+                                required
                                 error={errors.div2}
                                 options={getDivisions(selectedDept2).map(d => ({ value: d.id, label: d.name }))}
                                 disabled={!selectedDept2}
                             />
-                            {selectedDiv2 && (
-                                <div className="text-sm text-gray-600 bg-gray-50 p-3 rounded">
-                                    {getDivisionDesc(selectedDept2, selectedDiv2)}
-                                </div>
-                            )}
-                            <TextAreaField label="Alasan" name="reason2" placeholder="Jawaban Anda" register={register} error={errors.reason2} />
+
+                            <TextAreaField
+                                label="Alasan Pilihan 2"
+                                name="reason2"
+                                placeholder="Alasan memilih divisi ini..."
+                                register={register}
+                                required
+                                error={errors.reason2}
+                            />
                         </div>
                     </FormSection>
 
-                    {/* Willing Transfer */}
-                    <FormSection title="Bersedia dipindahkan ke Divisi lain?" error={errors.willing_transfer}>
-                        <div className="flex flex-col gap-2">
-                            <label className="flex items-center gap-2 cursor-pointer p-2 hover:bg-gray-50 rounded">
-                                <input {...register("willing_transfer", { required: true })} type="radio" value="true" className="w-4 h-4 text-brown-600 focus:ring-brown-500" />
-                                <span>Ya</span>
-                            </label>
-                            <label className="flex items-center gap-2 cursor-pointer p-2 hover:bg-gray-50 rounded">
-                                <input {...register("willing_transfer", { required: true })} type="radio" value="false" className="w-4 h-4 text-brown-600 focus:ring-brown-500" />
-                                <span>Tidak</span>
-                            </label>
-                            {errors.willing_transfer && <span className="text-red-500 text-sm">Pertanyaan ini wajib diisi</span>}
+                    {/* Essays & Details */}
+                    <FormSection title="Pengalaman & Komitmen" error={errors.org_experience || errors.skills || errors.commitment || errors.main_reason}>
+                        <div className="grid grid-cols-1 gap-4">
+                            <TextAreaField
+                                label="Pengalaman Organisasi / Pelayanan (jika ada)"
+                                name="org_experience"
+                                placeholder="Jelaskan pengalaman organisasi atau pelayanan Anda sebelumnya..."
+                                register={register}
+                                error={errors.org_experience}
+                            />
+
+                            <TextAreaField
+                                label="Skill / Keahlian yang Dimiliki"
+                                name="skills"
+                                placeholder="Sebutkan keahlian yang relevan dengan pilihan divisi Anda..."
+                                register={register}
+                                error={errors.skills}
+                            />
+
+                            <TextAreaField
+                                label="Komitmen Pelayanan"
+                                name="commitment"
+                                placeholder="Bagaimana komitmen Anda dalam pelayanan ini?"
+                                register={register}
+                                required
+                                error={errors.commitment}
+                            />
+
+                            <TextAreaField
+                                label="Alasan Ingin Melayani"
+                                name="main_reason"
+                                placeholder="Apa motivasi utama Anda ingin bergabung di BPH PMK ITERA?"
+                                register={register}
+                                required
+                                error={errors.main_reason}
+                            />
+                        </div>
+                    </FormSection>
+
+                    {/* Active Period */}
+                    <FormSection title="Ketersediaan" error={errors.active_period || errors.willing_transfer}>
+                        <div className="flex flex-col gap-4">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">Bersedia aktif selama 1 periode kepengurusan?</label>
+                                <div className="flex gap-4">
+                                    <label className="flex items-center gap-2 cursor-pointer">
+                                        <input {...register("active_period", { required: "Wajib diisi" })} type="radio" value="true" className="w-4 h-4 text-brown-600 focus:ring-brown-500" />
+                                        <span>Ya</span>
+                                    </label>
+                                    <label className="flex items-center gap-2 cursor-pointer">
+                                        <input {...register("active_period", { required: "Wajib diisi" })} type="radio" value="false" className="w-4 h-4 text-brown-600 focus:ring-brown-500" />
+                                        <span>Tidak</span>
+                                    </label>
+                                </div>
+                                {errors.active_period && <span className="text-red-500 text-xs mt-1 block">{errors.active_period.message}</span>}
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">Bersedia dipindahkan ke divisi lain jika diperlukan?</label>
+                                <div className="flex gap-4">
+                                    <label className="flex items-center gap-2 cursor-pointer">
+                                        <input {...register("willing_transfer", { required: "Wajib diisi" })} type="radio" value="true" className="w-4 h-4 text-brown-600 focus:ring-brown-500" />
+                                        <span>Ya</span>
+                                    </label>
+                                    <label className="flex items-center gap-2 cursor-pointer">
+                                        <input {...register("willing_transfer", { required: "Wajib diisi" })} type="radio" value="false" className="w-4 h-4 text-brown-600 focus:ring-brown-500" />
+                                        <span>Tidak</span>
+                                    </label>
+                                </div>
+                                {errors.willing_transfer && <span className="text-red-500 text-xs mt-1 block">{errors.willing_transfer.message}</span>}
+                            </div>
+                        </div>
+                    </FormSection>
+
+                    {/* File Uploads */}
+                    <FormSection title="Berkas Pendukung (Opsional)" description="Maksimal 10MB per file." error={errors.sertif || errors.portfolio}>
+                        <div className="grid grid-cols-1 gap-6">
+                            <FileInputField
+                                label="Sertifikat / Bukti Pengalaman (PDF/Image)"
+                                name="sertif"
+                                register={register}
+                                error={errors.sertif}
+                                rules={{
+                                    validate: {
+                                        fileSize: (files) => {
+                                            if (!files || files.length === 0) return true;
+                                            return files[0].size <= 10 * 1024 * 1024 || "Ukuran file maksimal 10MB";
+                                        }
+                                    }
+                                }}
+                            />
+                            <FileInputField
+                                label="Portofolio (PDF/Link di dokumen)"
+                                name="portfolio"
+                                register={register}
+                                error={errors.portfolio}
+                                description="Wajib untuk departemen kreatif/multimedia (jika ada)"
+                                rules={{
+                                    validate: {
+                                        fileSize: (files) => {
+                                            if (!files || files.length === 0) return true;
+                                            return files[0].size <= 10 * 1024 * 1024 || "Ukuran file maksimal 10MB";
+                                        }
+                                    }
+                                }}
+                            />
                         </div>
                     </FormSection>
 
@@ -232,16 +327,9 @@ const RegistrationForm = () => {
                         )}
                     </AnimatePresence>
 
-                    <div className="flex justify-between items-center pt-2">
-                        <button
-                            type="submit"
-                            disabled={isSubmitting}
-                            className={`bg-brown-700 text-white px-6 py-2 rounded shadow hover:bg-brown-800 transition-all font-medium disabled:opacity-70 disabled:cursor-not-allowed`}
-                        >
-                            {isSubmitting ? <><Loader2 className="animate-spin inline mr-2" size={18} /> Mengirim...</> : 'Kirim'}
-                        </button>
-                        <button type="button" onClick={() => reset()} className="text-brown-700 font-medium hover:text-brown-800 px-4 py-2 hover:bg-brown-50 rounded transition">
-                            Kosongkan formulir
+                    <div className="flex justify-between items-center pt-4">
+                        <button type="submit" disabled={isSubmitting} className={`bg-brown-700 text-white px-8 py-3 rounded-lg shadow hover:bg-brown-800 transition-all font-bold disabled:opacity-70 disabled:cursor-not-allowed flex items-center`}>
+                            {isSubmitting ? <><Loader2 className="animate-spin inline mr-2" size={18} /> Mengirim...</> : 'Kirim Pendaftaran'}
                         </button>
                     </div>
                 </form>
@@ -254,11 +342,12 @@ const RegistrationForm = () => {
 };
 
 // Helper Components
-const InputField = ({ name, type = "text", placeholder, register, required, rules, error }) => (
+const InputField = ({ name, type = "text", label, placeholder, register, required, rules, error }) => (
     <div className="flex flex-col w-full">
+        {label && <label className="text-xs text-gray-500 mb-1">{label}</label>}
         <input
             {...register(name, {
-                required: required ? `Bagian ini wajib diisi` : false,
+                required: required ? `Wajib diisi` : false,
                 ...rules
             })}
             type={type}
@@ -273,11 +362,11 @@ const SelectField = ({ label, name, register, required, error, options, disabled
     <div className="flex flex-col w-full mb-3">
         <label className="text-xs text-gray-500 mb-1">{label}</label>
         <select
-            {...register(name, { required: required ? `Bagian ini wajib diisi` : false })}
+            {...register(name, { required: required ? `Wajib diisi` : false })}
             disabled={disabled}
             className={`w-full border border-gray-300 rounded p-2 focus:ring-1 focus:ring-brown-500 focus:border-brown-500 outline-none transition-all ${error ? 'border-red-500' : ''} disabled:bg-gray-100 disabled:text-gray-400`}
         >
-            <option value="" hidden>Pilih</option>
+            <option value="" hidden>Pilih {label}</option>
             {options.map((opt, idx) => (
                 <option key={idx} value={opt.value}>{opt.label}</option>
             ))}
@@ -290,12 +379,30 @@ const TextAreaField = ({ label, name, placeholder, register, required, error }) 
     <div className="flex flex-col w-full mt-2">
         {label && <label className="text-xs text-gray-500 mb-1">{label}</label>}
         <textarea
-            {...register(name, { required: required ? `Bagian ini wajib diisi` : false })}
+            {...register(name, { required: required ? `Wajib diisi` : false })}
             placeholder={placeholder}
             rows="1"
             className={`w-full border-b border-gray-300 focus:border-brown-600 outline-none py-2 transition-all placeholder-gray-400 resize-none overflow-hidden focus:min-h-[80px] ${error ? 'border-red-500' : ''}`}
             onInput={(e) => { e.target.style.height = "auto"; e.target.style.height = e.target.scrollHeight + "px"; }}
         ></textarea>
+        {error && <span className="text-red-500 text-xs mt-1 flex items-center gap-1"><AlertCircle size={12} /> {error.message}</span>}
+    </div>
+);
+
+const FileInputField = ({ label, name, register, required, error, description, rules }) => (
+    <div className="flex flex-col w-full border border-dashed border-gray-300 rounded-lg p-4 hover:bg-gray-50 transition-colors">
+        <label className="text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+            <Upload size={16} /> {label}
+        </label>
+        {description && <span className="text-xs text-gray-400 mb-2">{description}</span>}
+        <input
+            {...register(name, {
+                required: required ? `Wajib diupload` : false,
+                ...rules
+            })}
+            type="file"
+            className="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-brown-50 file:text-brown-700 hover:file:bg-brown-100"
+        />
         {error && <span className="text-red-500 text-xs mt-1 flex items-center gap-1"><AlertCircle size={12} /> {error.message}</span>}
     </div>
 );
