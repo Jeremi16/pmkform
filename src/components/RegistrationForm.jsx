@@ -296,7 +296,7 @@ const RegistrationForm = () => {
                                 }}
                             />
                             <FileInputField
-                                label="Portofolio (PDF/Link di dokumen)"
+                                label="Portofolio (PDF Only) (Tidak Perlu untuk Dept. Pelayanan Khusus)"
                                 name="portfolio"
                                 register={register}
                                 error={errors.portfolio}
