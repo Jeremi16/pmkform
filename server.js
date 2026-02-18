@@ -7,7 +7,7 @@ import dotenv from 'dotenv';
 import { Parser } from 'json2csv';
 import jwt from 'jsonwebtoken';
 import ExcelJS from 'exceljs';
-import fs from 'fs';
+import { createRequire } from 'module';
 import multer from 'multer';
 
 dotenv.config();
@@ -209,7 +209,9 @@ app.get('/api/export/xlsx', authenticateToken, async (req, res) => {
         }
 
         // Load departments keys
-        const departmentsData = JSON.parse(fs.readFileSync('./src/data/departments.json', 'utf8'));
+        // Load departments keys
+        const require = createRequire(import.meta.url);
+        const departmentsData = require('./src/data/departments.json');
 
         const getDepartmentName = (id) => {
             if (!id) return '-';
