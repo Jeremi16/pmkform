@@ -1,4 +1,4 @@
-[
+export const departments = [
     {
         "id": "dep_internal",
         "name": "Departemen Internal",
@@ -28,6 +28,22 @@
                 "id": "div_intra_kampus",
                 "name": "Divisi Intra Kampus",
                 "description": "Mengelola informasi di lingkup internal kampus, melakukan negosiasi dengan HIMA (Himpunan Mahasiswa) atau birokrat kampus jika diperlukan, serta bertanggung jawab atas perizinan tempat kegiatan."
+            }
+        ]
+    },
+    {
+        "id": "dep_diakonia",
+        "name": "Departemen Diakonia",
+        "divisions": [
+            {
+                "id": "div_doa",
+                "name": "Divisi Doa",
+                "description": "Menjadi wadah dukungan doa melalui 'Menara Doa Kampus', mengunjungi teman yang sakit atau berduka, serta menjalankan ibadah saat teduh bersama pengurus."
+            },
+            {
+                "id": "div_pemuridan",
+                "name": "Divisi Pemuridan",
+                "description": "Melaksanakan kelompok kecil (komsel), diskusi Alkitab, mentoring rohani, menyalurkan berkat ke panti, dan memproduksi konten rohani edukatif (video/podcast)."
             }
         ]
     },
@@ -132,4 +148,4 @@
             }
         ]
     }
-]
+];
