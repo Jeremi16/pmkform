@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Download, Filter, ArrowUpDown, LogOut, RefreshCw } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import departmentsData from '../data/departments.json';
+import { departments as departmentsData } from '../data/departments.js';
 
 const AdminDashboard = () => {
     const [allRegistrations, setAllRegistrations] = useState([]);

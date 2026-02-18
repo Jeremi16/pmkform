@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Loader2, CheckCircle, AlertCircle, Upload } from 'lucide-react';
 import axios from 'axios';
-import departmentsData from '../data/departments.json';
+import { departments as departmentsData } from '../data/departments.js';
 import FormSection, { TitleCard } from './FormUI';
 
 const RegistrationForm = () => {
