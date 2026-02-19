@@ -279,7 +279,7 @@ const RegistrationForm = () => {
                     </FormSection>
 
                     {/* File Uploads */}
-                    <FormSection title="Berkas Pendukung (Opsional)" description="Maksimal 10MB per file." error={errors.sertif || errors.portfolio}>
+                    <FormSection title="Berkas Pendukung (Opsional)" description="Maksimal 2MB per file." error={errors.sertif || errors.portfolio}>
                         <div className="grid grid-cols-1 gap-6">
                             <FileInputField
                                 label="Sertifikat / Bukti Pengalaman (PDF/Image)"
@@ -290,7 +290,7 @@ const RegistrationForm = () => {
                                     validate: {
                                         fileSize: (files) => {
                                             if (!files || files.length === 0) return true;
-                                            return files[0].size <= 10 * 1024 * 1024 || "Ukuran file maksimal 10MB";
+                                            return files[0].size <= 2 * 1024 * 1024 || "Ukuran file maksimal 2MB";
                                         }
                                     }
                                 }}
@@ -305,7 +305,7 @@ const RegistrationForm = () => {
                                     validate: {
                                         fileSize: (files) => {
                                             if (!files || files.length === 0) return true;
-                                            return files[0].size <= 10 * 1024 * 1024 || "Ukuran file maksimal 10MB";
+                                            return files[0].size <= 2 * 1024 * 1024 || "Ukuran file maksimal 2MB";
                                         }
                                     }
                                 }}
